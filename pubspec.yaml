@@ -1,0 +1,79 @@
+name: reminisce
+description: "A cinematic, Tinder-style phone storage cleaner."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+  go_router: ^14.1.4
+  hive_flutter: ^1.1.0
+  shared_preferences: ^2.2.3
+  permission_handler: ^11.3.1
+  path_provider: ^2.1.3
+  path: ^1.9.0
+  mime: ^1.0.5
+  photo_view: ^0.15.0
+  video_player: ^2.8.2
+  chewie: ^1.8.1
+  flutter_pdfview: ^1.3.2
+  cached_network_image: ^3.3.1
+  flutter_contacts: ^1.1.9+2
+  just_audio: ^0.9.36
+  audio_waveforms: ^1.0.12
+  flutter_card_swiper: ^7.0.0
+  flutter_animate: ^4.5.0
+  lottie: ^3.1.0
+  shimmer: ^3.0.0
+  google_fonts: ^6.2.1
+  fl_chart: ^0.68.0
+  flutter_local_notifications: ^17.1.2
+  intl: ^0.19.0
+  collection: ^1.18.0
+  package_info_plus: ^8.0.0
+  workmanager:
+    git:
+      url: https://github.com/fluttercommunity/flutter_workmanager.git
+      path: workmanager
+      ref: main
+  device_info_plus: ^12.4.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.9
+  riverpod_generator: ^2.4.0
+  hive_generator: ^2.0.1
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/reminisce_logo.png"
+  adaptive_icon_background: "#0D1B2A"
+  adaptive_icon_foreground: "assets/images/reminisce_logo.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/lottie/
+
+  # fonts:
+  #   - family: Playfair Display
+  #     fonts:
+  #       - asset: google_fonts/PlayfairDisplay-Regular.ttf
+  #       - asset: google_fonts/PlayfairDisplay-Bold.ttf
+  #   - family: Plus Jakarta Sans
+  #     fonts:
+  #       - asset: google_fonts/PlusJakartaSans-Regular.ttf
+  #       - asset: google_fonts/PlusJakartaSans-Bold.ttf

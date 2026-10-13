@@ -46,9 +46,9 @@ class AppTheme {
       primaryColor: AppColors.lightPrimaryTerracotta,
       scaffoldBackgroundColor: AppColors.lightScaffoldBg,
       cardColor: AppColors.lightSurface,
-      colorScheme: ColorScheme.light(
-        primary: AppColors.lightPrimaryTerracotta,
-        secondary: AppColors.lightPrimaryBright,
+      colorScheme: const ColorScheme.light(
+        primary: AppColors.darkScaffoldBg,
+        secondary: AppColors.darkSurface,
         surface: AppColors.lightSurface,
         onPrimary: AppColors.lightScaffoldBg,
         onSecondary: AppColors.lightScaffoldBg,
@@ -58,6 +58,7 @@ class AppTheme {
       ),
       textTheme: _buildTextTheme(
         AppColors.lightPrimaryTerracotta,
+        // AppColors.darkScaffoldBg,
         Brightness.light,
       ),
       appBarTheme: AppBarTheme(
@@ -124,7 +125,7 @@ class AppTheme {
       primaryColor: AppColors.darkPrimaryGold,
       scaffoldBackgroundColor: AppColors.darkScaffoldBg,
       cardColor: AppColors.darkSurface,
-      colorScheme: ColorScheme.dark(
+      colorScheme: const ColorScheme.dark(
         primary: AppColors.darkPrimaryGold,
         secondary: AppColors.darkPrimaryBright,
         surface: AppColors.darkSurface,

@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/widgets/app_background.dart';
 import '../../core/constants/app_colors.dart';
+import '../../core/router/route_names.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -59,9 +60,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       final bool onboardingComplete =
           prefs.getBool('onboarding_complete') ?? false;
       if (onboardingComplete) {
-        context.go('/home');
+        context.go(RouteNames.home);
       } else {
-        context.go('/onboarding');
+        context.go(RouteNames.onboarding);
       }
     }
   }

@@ -18,36 +18,21 @@ class AppSettingsAdapter extends TypeAdapter<AppSettings> {
     };
     return AppSettings(
       deletionLimit: fields[0] as int,
-      defaultSwipeIsDelete: fields[1] as bool,
-      autoPlayVideos: fields[2] as bool,
-      showFileSizes: fields[3] as bool,
-      notifWeeklyDigest: fields[4] as bool,
-      notifGroupNudge: fields[5] as bool,
-      notifPostClean: fields[6] as bool,
-      fitContent: fields[7] as bool? ?? false,
+      booleanSettings: (fields[1] as Map?)?.cast<String, bool>(),
+      maxSelectionOverride: fields[2] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, AppSettings obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.deletionLimit)
       ..writeByte(1)
-      ..write(obj.defaultSwipeIsDelete)
+      ..write(obj.booleanSettings)
       ..writeByte(2)
-      ..write(obj.autoPlayVideos)
-      ..writeByte(3)
-      ..write(obj.showFileSizes)
-      ..writeByte(4)
-      ..write(obj.notifWeeklyDigest)
-      ..writeByte(5)
-      ..write(obj.notifGroupNudge)
-      ..writeByte(6)
-      ..write(obj.notifPostClean)
-      ..writeByte(7)
-      ..write(obj.fitContent);
+      ..write(obj.maxSelectionOverride);
   }
 
   @override

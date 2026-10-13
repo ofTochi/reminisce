@@ -6,7 +6,7 @@ part of 'whatsapp_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$whatsappContactsHash() => r'840980f6466e78a98af50822034b96606df13c23';
+String _$whatsappContactsHash() => r'a0cc7099b389228ac753358bfc3784917b800ba9';
 
 /// See also [whatsappContacts].
 @ProviderFor(whatsappContacts)

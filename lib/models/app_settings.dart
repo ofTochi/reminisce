@@ -1,4 +1,6 @@
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '../core/constants/app_strings.dart';
 
 part 'app_settings.g.dart';
 
@@ -6,51 +8,44 @@ part 'app_settings.g.dart';
 class AppSettings {
   @HiveField(0)
   final int deletionLimit;
+
   @HiveField(1)
-  final bool defaultSwipeIsDelete;
+  final Map<String, bool> booleanSettings;
+
   @HiveField(2)
-  final bool autoPlayVideos;
-  @HiveField(3)
-  final bool showFileSizes;
-  @HiveField(4)
-  final bool notifWeeklyDigest;
-  @HiveField(5)
-  final bool notifGroupNudge;
-  @HiveField(6)
-  final bool notifPostClean;
-  @HiveField(7)
-  final bool fitContent;
+  final int? maxSelectionOverride;
 
   AppSettings({
     this.deletionLimit = 50,
-    this.defaultSwipeIsDelete = true,
-    this.autoPlayVideos = true,
-    this.showFileSizes = true,
-    this.notifWeeklyDigest = true,
-    this.notifGroupNudge = true,
-    this.notifPostClean = true,
-    this.fitContent = false,
-  });
+    Map<String, bool>? booleanSettings,
+    this.maxSelectionOverride,
+  }) : booleanSettings = booleanSettings ?? const {};
+
+  /// Read any boolean setting by arbitrary string key with a fallback
+  bool get(String key, {bool defaultValue = false}) {
+    return booleanSettings[key] ?? defaultValue;
+  }
+
+  /// Convenience check whether any setting key is enabled
+  bool isEnabled(String key, {bool defaultValue = false}) =>
+      get(key, defaultValue: defaultValue);
+
+  // Dynamic convenience accessor for existing swipe card check
+  bool get fitContent => get(AppStrings.settings.fitContent, defaultValue: false);
 
   AppSettings copyWith({
     int? deletionLimit,
-    bool? defaultSwipeIsDelete,
-    bool? autoPlayVideos,
-    bool? showFileSizes,
-    bool? notifWeeklyDigest,
-    bool? notifGroupNudge,
-    bool? notifPostClean,
-    bool? fitContent,
+    Map<String, bool>? booleanSettings,
+    Object? maxSelectionOverride = _sentinel,
   }) {
     return AppSettings(
       deletionLimit: deletionLimit ?? this.deletionLimit,
-      defaultSwipeIsDelete: defaultSwipeIsDelete ?? this.defaultSwipeIsDelete,
-      autoPlayVideos: autoPlayVideos ?? this.autoPlayVideos,
-      showFileSizes: showFileSizes ?? this.showFileSizes,
-      notifWeeklyDigest: notifWeeklyDigest ?? this.notifWeeklyDigest,
-      notifGroupNudge: notifGroupNudge ?? this.notifGroupNudge,
-      notifPostClean: notifPostClean ?? this.notifPostClean,
-      fitContent: fitContent ?? this.fitContent,
+      booleanSettings: booleanSettings ?? this.booleanSettings,
+      maxSelectionOverride: maxSelectionOverride == _sentinel
+          ? this.maxSelectionOverride
+          : maxSelectionOverride as int?,
     );
   }
 }
+
+const Object _sentinel = Object();

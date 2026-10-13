@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../constants/app_colors.dart';
+import '../router/route_names.dart';
 import '../../../providers/session_provider.dart';
 
 class BottomNavScaffold extends ConsumerWidget {
@@ -43,13 +44,13 @@ class BottomNavScaffold extends ConsumerWidget {
   void _onItemTapped(int index, BuildContext context) {
     switch (index) {
       case 0:
-        context.go('/home');
+        context.go(RouteNames.home);
         break;
       case 1:
-        context.go('/analytics');
+        context.go(RouteNames.analytics);
         break;
       case 2:
-        context.go('/settings');
+        context.go(RouteNames.settings);
         break;
     }
   }
@@ -136,17 +137,17 @@ class _CustomBottomNavBar extends ConsumerWidget {
                   // Navigate back to active session
                   final session = ref.read(sessionProvider);
                   if (session.activeContentType == ContentType.photo) {
-                    context.push('/clean/photo');
+                    context.push(RouteNames.cleanPhoto);
                   } else if (session.activeContentType ==
                       ContentType.document) {
-                    context.push('/clean/document');
+                    context.push(RouteNames.cleanDocument);
                   } else if (session.activeContentType == ContentType.audio) {
-                    context.push('/clean/audio');
+                    context.push(RouteNames.cleanAudio);
                   }
                 } else if (sessionStatus == SessionStatus.pendingDelete) {
-                  context.push('/goodbye');
+                  context.push(RouteNames.goodbye);
                 } else {
-                  context.go('/home');
+                  context.go(RouteNames.home);
                 }
               },
               child: Container(

@@ -1,61 +1,149 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
+import '../../../core/widgets/modern_card.dart';
 import '../../../models/whatsapp_contact.dart';
 
 class ContactListTile extends StatelessWidget {
   final WhatsAppContact contact;
   final VoidCallback onTap;
 
-  const ContactListTile({super.key, required this.contact, required this.onTap});
+  const ContactListTile({
+    super.key,
+    required this.contact,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     final bool isLarge = contact.totalBytes > 100 * 1024 * 1024; // > 100MB
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: ListTile(
+    final Color primaryColor = isDark
+        ? AppColors.darkPrimaryGold
+        : AppColors.lightPrimaryTerracotta;
+    final Color textPrimary = isDark
+        ? AppColors.darkTextPrimary
+        : AppColors.lightTextPrimary;
+    final Color textMuted = isDark
+        ? AppColors.darkTextMuted
+        : AppColors.lightTextMuted;
+    final Color accentColor = contact.accentColor ?? primaryColor;
+
+    final String sizeFormatted = contact.totalBytes >= 1024 * 1024 * 1024
+        ? '${(contact.totalBytes / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB'
+        : '${(contact.totalBytes / (1024 * 1024)).toStringAsFixed(1)} MB';
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+      child: BouncingPressable(
         onTap: onTap,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        leading: CircleAvatar(
-          radius: 24,
-          backgroundColor: AppColors.darkPrimaryGold,
-          backgroundImage: contact.deviceContact?.photo != null
-              ? MemoryImage(contact.deviceContact!.photo!)
-              : null,
-          child: contact.deviceContact?.photo == null
-              ? Text(
-                  contact.name.substring(0, 1).toUpperCase(),
-                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                )
-              : null,
-        ),
-        title: Text(
-          contact.name,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-        subtitle: Text(
-          '${contact.totalFiles} files · ${(contact.totalBytes / (1024 * 1024)).toStringAsFixed(1)} MB',
-          style: const TextStyle(color: AppColors.darkTextMuted, fontSize: 13),
-        ),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            if (isLarge)
+        child: ModernCard(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          borderRadius: 16.0,
+          child: Row(
+            children: [
+              // Category Icon or Avatar
               Container(
-                width: 8,
-                height: 8,
-                decoration: const BoxDecoration(color: AppColors.darkDeleteRed, shape: BoxShape.circle),
+                width: 46,
+                height: 46,
+                decoration: BoxDecoration(
+                  color: accentColor.withValues(alpha: isDark ? 0.18 : 0.12),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(
+                    color: accentColor.withValues(alpha: 0.3),
+                    width: 1,
+                  ),
+                ),
+                child: contact.deviceContact?.photo != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(13),
+                        child: Image.memory(
+                          contact.deviceContact!.photo!,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Icon(
+                        contact.icon ?? Icons.folder_rounded,
+                        color: accentColor,
+                        size: 24,
+                      ),
               ),
-            const SizedBox(height: 4),
-            const Icon(Icons.chevron_right, color: AppColors.darkPrimaryGold),
-          ],
+
+              const SizedBox(width: 14),
+
+              // Title & Subtitle Info
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      contact.name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                        color: textPrimary,
+                        letterSpacing: -0.2,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 3),
+                    Row(
+                      children: [
+                        Text(
+                          '${contact.totalFiles} files · $sizeFormatted',
+                          style: TextStyle(
+                            color: textMuted,
+                            fontSize: 12,
+                          ),
+                        ),
+                        if (isLarge) ...[
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 1.5),
+                            decoration: BoxDecoration(
+                              color: AppColors.darkDeleteRed
+                                  .withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: const Text(
+                              'HEAVY',
+                              style: TextStyle(
+                                fontSize: 9,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.darkDeleteRed,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(width: 8),
+
+              // Chevron action
+              Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.05)
+                      : Colors.black.withValues(alpha: 0.04),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.chevron_right_rounded,
+                  color: textMuted,
+                  size: 18,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

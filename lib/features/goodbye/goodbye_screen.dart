@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:reminisce/core/router/route_names.dart';
 import '../../../core/widgets/app_background.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../providers/session_provider.dart';
@@ -193,7 +194,7 @@ class GoodbyeScreen extends ConsumerWidget {
               width: double.infinity,
               height: 56,
               child: ElevatedButton(
-                onPressed: () => context.go('/home'),
+                onPressed: () => context.go(RouteNames.home),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.darkPrimaryGold,
                   foregroundColor: Colors.black,
@@ -215,7 +216,7 @@ class GoodbyeScreen extends ConsumerWidget {
         title: const Text('Wait!'),
         content: const Text('You have files waiting to be freed. Delete before you go?'),
         actions: [
-          TextButton(onPressed: () => context.go('/home'), child: const Text('Not yet')),
+          TextButton(onPressed: () => context.go(RouteNames.home), child: const Text('Not yet')),
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('Stay here')),
         ],
       ),

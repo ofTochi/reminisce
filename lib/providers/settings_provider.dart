@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../models/app_settings.dart';
 
 part 'settings_provider.g.dart';
@@ -21,19 +21,27 @@ class Settings extends _$Settings {
     _save(newSettings);
   }
 
-  void toggleFitContent(bool value) {
-    _save(state.copyWith(fitContent: value));
-  }
-
   void setDeletionLimit(int limit) {
     _save(state.copyWith(deletionLimit: limit));
   }
-  
-  void toggleAutoPlay(bool value) {
-    _save(state.copyWith(autoPlayVideos: value));
+
+  /// Toggles any boolean setting dynamically by [key].
+  /// Completely agnostic to which keys exist.
+  void toggle(String key, [bool? value]) {
+    final current = state.get(key);
+    final next = value ?? !current;
+    final updated = Map<String, bool>.from(state.booleanSettings);
+    updated[key] = next;
+    _save(state.copyWith(booleanSettings: updated));
   }
-  
-  void toggleShowSizes(bool value) {
-    _save(state.copyWith(showFileSizes: value));
+
+  /// Reads any boolean setting dynamically by [key].
+  bool readSetting(String key, {bool defaultValue = false}) {
+    return state.get(key, defaultValue: defaultValue);
   }
 }
+
+/// Dynamic provider exposing the raw Map<String, bool> of all toggleable settings
+final booleanSettingsProvider = Provider<Map<String, bool>>((ref) {
+  return ref.watch(settingsProvider).booleanSettings;
+});

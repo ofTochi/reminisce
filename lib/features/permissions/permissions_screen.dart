@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/router/route_names.dart';
 import '../../core/widgets/app_background.dart';
 import '../../core/constants/app_colors.dart';
 
@@ -55,7 +56,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
     await prefs.setBool('onboarding_complete', true);
     // Add a small artificial delay to ensure users see the transition/loading
     await Future.delayed(const Duration(milliseconds: 800));
-    if (mounted) context.go('/home');
+    if (mounted) context.go(RouteNames.home);
   }
 
   Future<void> _requestPermissions() async {

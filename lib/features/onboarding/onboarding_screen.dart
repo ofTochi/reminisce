@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../core/widgets/app_background.dart';
 import '../../core/constants/app_colors.dart';
+import '../../core/router/route_names.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -46,7 +47,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Align(
             alignment: Alignment.topRight,
             child: TextButton(
-              onPressed: () => context.go('/permissions'),
+              onPressed: () => context.go(RouteNames.permissions),
               child: const Text(
                 'Skip',
                 style: TextStyle(color: AppColors.darkPrimaryGold),
@@ -123,7 +124,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   if (_currentPage < _pages.length - 1) {
                     _controller.nextPage(duration: 300.ms, curve: Curves.easeInOut);
                   } else {
-                    context.go('/permissions');
+                    context.go(RouteNames.permissions);
                   }
                 },
                 style: ElevatedButton.styleFrom(

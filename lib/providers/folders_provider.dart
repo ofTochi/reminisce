@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as p;
 import '../models/device_folder.dart';
+import '../services/kept_files_service.dart';
 import 'session_provider.dart';
 
 part 'folders_provider.g.dart';
@@ -99,3 +101,29 @@ Future<List<DeviceFolder>> deviceFolders(DeviceFoldersRef ref) async {
   folders.sort((a, b) => b.totalBytes.compareTo(a.totalBytes));
   return folders;
 }
+
+// ── Cleaned-folder filter layer ────────────────────────────────────────────────
+// This sits on top of deviceFoldersProvider without touching codegen.
+
+/// Simple toggle: when true show all folders including cleaned ones.
+final showCleanedFoldersProvider =
+    StateNotifierProvider<_ShowCleanedNotifier, bool>(
+  (_) => _ShowCleanedNotifier(),
+);
+
+class _ShowCleanedNotifier extends StateNotifier<bool> {
+  _ShowCleanedNotifier() : super(false);
+  void toggle() => state = !state;
+}
+
+/// The list that [FolderBrowserScreen] should actually consume.
+/// Hides cleaned-and-unchanged folders unless [showCleanedFoldersProvider] is true.
+final filteredDeviceFoldersProvider =
+    FutureProvider<List<DeviceFolder>>((ref) async {
+  final all = await ref.watch(deviceFoldersProvider.future);
+  final showCleaned = ref.watch(showCleanedFoldersProvider);
+  if (showCleaned) return all;
+  return all.where((folder) {
+    return !KeptFilesService.isCleanedAndUnchanged(folder.path, folder.fileCount);
+  }).toList();
+});
